@@ -2,8 +2,8 @@
   "compilerOptions": {
     // "outDir": "js",
     "target": "ES6",
-    "module": "commonjs",
-    "removeComments": true,
-    "esModuleInterop": true
+    "module": "commonjs", // commonjs là
+    "removeComments": true, // xóa comment khi dịch sang trang file js
+    "esModuleInterop": true  // dùng được từ khóa import thay cho require
   }
 }
