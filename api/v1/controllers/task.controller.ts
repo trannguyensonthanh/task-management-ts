@@ -1,4 +1,5 @@
 import paginationHelper from "../../../helpers/pagination";
+import searchHelper from "../../../helpers/search";
 import Task from "../models/task.model";
 import { Request, Response } from "express";
 
@@ -7,6 +8,7 @@ export const index = async (req: Request, res: Response) => {
   interface find {
     deleted: boolean;
     status?: string;
+    title? :string | RegExp;
   }
   const find: find = {
     deleted: false,
@@ -19,11 +21,15 @@ export const index = async (req: Request, res: Response) => {
   // pagination
   let initPagination = {
     limitItems: 3,
-    currentPage: 0,
+    currentPage: 1,
   };
   const countTasks = await Task.countDocuments(find); // sử dụng countDoc.. để đếm só lượng những sản phẩm được phép hiển thị
   let objectPagination = paginationHelper(initPagination, req, countTasks);
-
+  const objectSearch = searchHelper(req);
+ // đoạn tìm kiếm
+ if (req.query.keyword) {
+  find.title = objectSearch.title;
+}
   //sort
   const sort = {};
   if (req.query.sortKey && req.query.sortValue) {
