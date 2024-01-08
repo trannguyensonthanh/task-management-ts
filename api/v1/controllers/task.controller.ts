@@ -92,7 +92,18 @@ export const changeMulti = async (req: Request, res: Response) => {
       message: "Cập nhật trạng thái thành công"
      })
      break;
-     
+     case "deleted":
+      await Task.updateMany({
+        _id: {$in: ids}
+      }, {
+        deleted: true,
+        deletedAt: new Date()
+      })
+      res.json({
+        code: 200,
+        message: "Cập nhật trạng thái thành công"
+       })
+       break;
      default:
       res.json({
         code: 400,
@@ -146,4 +157,25 @@ try {
     message: "Lỗi!"
   });
 }
+}
+
+export const deleteTask = async (req: Request, res: Response) => {
+  try {
+    const id: string = req.params.id;
+    await Task.updateOne({
+      _id: id
+    }, {
+      deleted: true,
+      deletedAt: new Date()
+    });
+    res.json({
+      code: 200,
+      message: "thanh cong"
+    })
+  } catch(error){
+    res.json({
+      code: 400,
+      message: " that bai"
+    })
+  }
 }
